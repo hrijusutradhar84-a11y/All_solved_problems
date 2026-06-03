@@ -45,14 +45,24 @@ def rocket_velocity(m, v_rel, r, t):
     Calculate the final velocity of a rocket using Tsiolkovsky equation.
 
     Args:
-        m (float): Initial mass in kg
-        v_rel (float): Relative exhaust velocity in m/s
-        r (float): Mass loss rate in kg/s
-        t (float): Burn time in seconds
+        m (float): Initial mass in kg (must be > 0)
+        v_rel (float): Relative exhaust velocity in m/s (must be > 0)
+        r (float): Mass loss rate in kg/s (must be > 0)
+        t (float): Burn time in seconds (must be > 0)
 
     Returns:
-        int: Final velocity in m/s (converted to int), or None if final mass <= 0
+        int: Final velocity in m/s (converted to int), or None if any parameter is invalid or final mass <= 0
     """
+    # Validate input parameters
+    if m <= 0:
+        return None
+    if v_rel <= 0:
+        return None
+    if r <= 0:
+        return None
+    if t <= 0:
+        return None
+
     # Calculate final mass after burn time
     m1 = m - r * t
 
@@ -69,9 +79,32 @@ def rocket_velocity(m, v_rel, r, t):
 if __name__ == "__main__":
     # Test cases
     print("Testing rocket_velocity function:")
+    print("\n=== NORMAL TEST CASES ===")
     print(f"rocket_velocity(1000, 100, 10, 50) = {rocket_velocity(1000, 100, 10, 50)}")
     print(f"rocket_velocity(5000, 200, 100, 20) = {rocket_velocity(5000, 200, 100, 20)}")
     print(f"rocket_velocity(1000, 300, 50, 25) = {rocket_velocity(1000, 300, 50, 25)}")
 
     # Invalid case: mass becomes non-positive
     print(f"rocket_velocity(100, 100, 50, 3) = {rocket_velocity(100, 100, 50, 3)}")  # Should return None
+
+    print("\n=== EDGE CASES: NEGATIVE VALUES ===")
+
+    # Test case: Negative initial mass
+    print("\n--- Negative Initial Mass ---")
+    print(f"rocket_velocity(-1000, 100, 10, 50) = {rocket_velocity(-1000, 100, 10, 50)}")
+
+    # Test case: Negative time
+    print("\n--- Negative Time ---")
+    print(f"rocket_velocity(1000, 100, 10, -50) = {rocket_velocity(1000, 100, 10, -50)}")
+
+    # Test case: Negative mass loss rate (gaining mass)
+    print("\n--- Negative Mass Loss Rate (gaining mass) ---")
+    print(f"rocket_velocity(1000, 100, -10, 50) = {rocket_velocity(1000, 100, -10, 50)}")
+
+    # Test case: Negative relative exhaust velocity
+    print("\n--- Negative Relative Exhaust Velocity ---")
+    print(f"rocket_velocity(1000, -100, 10, 50) = {rocket_velocity(1000, -100, 10, 50)}")
+
+    # Test case: All negative
+    print("\n--- All Negative ---")
+    print(f"rocket_velocity(-1000, -100, -10, -50) = {rocket_velocity(-1000, -100, -10, -50)}")
