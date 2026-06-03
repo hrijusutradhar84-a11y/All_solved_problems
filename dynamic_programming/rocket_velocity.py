@@ -1,0 +1,77 @@
+"""
+Rocket Velocity Calculation using Tsiolkovsky Rocket Equation
+
+Problem:
+Calculate the final velocity of a rocket with no external forces acting on it,
+using the Tsiolkovsky rocket equation. The rocket starts with initial mass m,
+zero velocity, and loses mass at rate r. The escaping mass has relative velocity
+v_rel opposite to the rocket's direction of motion.
+
+Formulas Used:
+
+1. Tsiolkovsky Rocket Equation:
+   v = v_rel * ln(m₀ / m₁)
+
+   Where:
+   - v is the final velocity of the rocket (m/s)
+   - v_rel is the relative exhaust velocity (m/s)
+   - m₀ is the initial mass (kg)
+   - m₁ is the final mass (kg)
+   - ln is the natural logarithm
+
+2. Final Mass Calculation:
+   m₁ = m₀ - r * t
+
+   Where:
+   - m₁ is the final mass (kg)
+   - m₀ is the initial mass (kg)
+   - r is the mass loss rate (kg/s)
+   - t is the burn time (seconds)
+
+Time Complexity: O(1) - Constant time, single logarithm calculation
+Space Complexity: O(1) - Constant space, no additional data structures
+
+Example:
+If m=1000 kg, v_rel=100 m/s, r=10 kg/s, t=50 s:
+m₁ = 1000 - 10 * 50 = 500 kg
+v = 100 * ln(1000/500) = 100 * ln(2) ≈ 69 m/s
+"""
+
+from math import log
+
+
+def rocket_velocity(m, v_rel, r, t):
+    """
+    Calculate the final velocity of a rocket using Tsiolkovsky equation.
+
+    Args:
+        m (float): Initial mass in kg
+        v_rel (float): Relative exhaust velocity in m/s
+        r (float): Mass loss rate in kg/s
+        t (float): Burn time in seconds
+
+    Returns:
+        int: Final velocity in m/s (converted to int), or None if final mass <= 0
+    """
+    # Calculate final mass after burn time
+    m1 = m - r * t
+
+    # Validate: final mass must be positive
+    if m1 <= 0:
+        return None
+
+    # Apply Tsiolkovsky rocket equation: v = v_rel * ln(m₀ / m₁)
+    final_velocity = v_rel * log(m / m1)
+
+    return int(final_velocity)
+
+
+if __name__ == "__main__":
+    # Test cases
+    print("Testing rocket_velocity function:")
+    print(f"rocket_velocity(1000, 100, 10, 50) = {rocket_velocity(1000, 100, 10, 50)}")
+    print(f"rocket_velocity(5000, 200, 100, 20) = {rocket_velocity(5000, 200, 100, 20)}")
+    print(f"rocket_velocity(1000, 300, 50, 25) = {rocket_velocity(1000, 300, 50, 25)}")
+
+    # Invalid case: mass becomes non-positive
+    print(f"rocket_velocity(100, 100, 50, 3) = {rocket_velocity(100, 100, 50, 3)}")  # Should return None
