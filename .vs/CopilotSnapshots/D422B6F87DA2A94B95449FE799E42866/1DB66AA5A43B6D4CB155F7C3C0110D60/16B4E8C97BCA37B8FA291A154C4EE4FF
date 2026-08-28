@@ -1,0 +1,22 @@
+﻿"""
+Connect 4 Game Module
+
+This module provides access to the Connect4 game class.
+"""
+
+import sys
+import importlib.util
+
+# Load Connect_4.py directly from file path to avoid 'array' builtin conflict
+spec = importlib.util.spec_from_file_location("Connect_4", r"E:\All_solved_problems\array\Connect_4.py")
+Connect_4_module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(Connect_4_module)
+
+Connect4 = Connect_4_module.Connect4
+
+# Example usage:
+if __name__ == "__main__":
+    game = Connect4()
+    print(game.play(3))  # Player 1 plays column 3
+    print(game.play(3))  # Player 2 plays column 3
+    print(game.play(4))  # Player 1 plays column 4

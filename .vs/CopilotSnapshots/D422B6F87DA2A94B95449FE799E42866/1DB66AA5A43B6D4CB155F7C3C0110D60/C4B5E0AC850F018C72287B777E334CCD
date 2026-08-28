@@ -1,0 +1,20 @@
+﻿"""
+Connect 4 Game Module
+
+This module provides access to the Connect4 game class.
+"""
+
+import sys
+sys.path.insert(0, r"E:\All_solved_problems")
+
+# Import the Connect4 module using importlib to avoid 'array' builtin conflict
+from importlib import import_module
+Connect4_module = import_module("array.Connect_4")
+Connect4 = Connect4_module.Connect4
+
+# Example usage:
+if __name__ == "__main__":
+    game = Connect4()
+    print(game.play(3))  # Player 1 plays column 3
+    print(game.play(3))  # Player 2 plays column 3
+    print(game.play(4))  # Player 1 plays column 4

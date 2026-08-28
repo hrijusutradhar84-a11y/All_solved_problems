@@ -1,0 +1,42 @@
+﻿import sys
+import importlib.util
+
+# Load Connect_4.py directly from file path to avoid 'array' builtin conflict
+spec = importlib.util.spec_from_file_location("Connect_4", r"E:\All_solved_problems\array\Connect_4.py")
+Connect_4_module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(Connect_4_module)
+
+Connect4 = Connect_4_module.Connect4
+
+import pygame
+
+# 1. Initialize your engine and a visual window
+game = Connect4()
+pygame.init()
+screen = pygame.display.set_mode((700, 600)) # 7 columns * 100px, 6 rows * 100px
+
+# 2. The Infinite Game Loop
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+        # Check if the player clicked the mouse
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            posx = event.pos[0] # Grab the horizontal pixel coordinate
+            col = int(posx // 100) # Convert pixel (e.g., 350px) to column index (3)
+
+            # PING YOUR LOGIC!
+            result = game.play(col) 
+            print(result) # "Player 1 has a turn", "Player 2 wins!", etc.
+
+    # 3. Draw the board visually based on your self.board matrix
+    for r in range(6):
+        for c in range(7):
+            if game.board[r][c] == 1:
+                pygame.draw.circle(screen, (255, 0, 0), (c*100+50, r*100+50), 45) # Red circle
+            elif game.board[r][c] == 2:
+                pygame.draw.circle(screen, (0, 0, 255), (c*100+50, r*100+50), 45) # Blue circle
+
+    pygame.display.update()
